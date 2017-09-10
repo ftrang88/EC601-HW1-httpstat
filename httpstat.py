@@ -103,7 +103,7 @@ yellow = make_color(33)
 blue = make_color(34)
 magenta = make_color(35)
 cyan = make_color(36)
-
+white = make_color(37)
 bold = make_color(1)
 underline = make_color(4)
 
@@ -275,10 +275,10 @@ def main():
     for loop, line in enumerate(headers.split('\n')):
         if loop == 0:
             p1, p2 = tuple(line.split('/'))
-            print(green(p1) + grayscale[14]('/') + cyan(p2))
+            print(white(p1) + cyan[14]('/') + magenta(p2))
         else:
             pos = line.find(':')
-            print(grayscale[14](line[:pos + 1]) + cyan(line[pos + 1:]))
+            print(cyan[14](line[:pos + 1]) + magenta(line[pos + 1:]))
 
     print()
 
@@ -292,7 +292,7 @@ def main():
         if body_len > body_limit:
             print(body[:body_limit] + cyan('...'))
             print()
-            s = '{} is truncated ({} out of {})'.format(green('Body'), body_limit, body_len)
+            s = '{} is truncated ({} out of {})'.format(white('Body'), body_limit, body_len)
             if save_body:
                 s += ', stored in: {}'.format(bodyf.name)
             print(s)
@@ -300,7 +300,7 @@ def main():
             print(body)
     else:
         if save_body:
-            print('{} stored in: {}'.format(green('Body'), bodyf.name))
+            print('{} stored in: {}'.format(white('Body'), bodyf.name))
 
     # remove body file
     if not save_body:
@@ -315,14 +315,14 @@ def main():
 
     # colorize template first line
     tpl_parts = template.split('\n')
-    tpl_parts[0] = grayscale[16](tpl_parts[0])
+    tpl_parts[0] = white[16](tpl_parts[0])
     template = '\n'.join(tpl_parts)
 
     def fmta(s):
-        return cyan('{:^7}'.format(str(s) + 'ms'))
+        return magenta('{:^7}'.format(str(s) + 'ms'))
 
     def fmtb(s):
-        return cyan('{:<7}'.format(str(s) + 'ms'))
+        return magenta('{:<7}'.format(str(s) + 'ms'))
 
     stat = template.format(
         # a
