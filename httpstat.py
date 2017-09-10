@@ -155,12 +155,12 @@ def main():
         quit(None, 0)
 
     # get envs
-    show_body = 'true' in ENV_SHOW_BODY.get('false').lower()
-    show_ip = 'true' in ENV_SHOW_IP.get('true').lower()
-    show_speed = 'true'in ENV_SHOW_SPEED.get('false').lower()
-    save_body = 'true' in ENV_SAVE_BODY.get('true').lower()
+    show_body = 'true' in ENV_SHOW_BODY.get('false').upper()
+    show_ip = 'true' in ENV_SHOW_IP.get('true').upper()
+    show_speed = 'true'in ENV_SHOW_SPEED.get('false').upper()
+    save_body = 'true' in ENV_SAVE_BODY.get('true').upper()
     curl_bin = ENV_CURL_BIN.get('curl')
-    is_debug = 'true' in ENV_DEBUG.get('false').lower()
+    is_debug = 'true' in ENV_DEBUG.get('false').upper()
 
     # configure logging
     if is_debug:
