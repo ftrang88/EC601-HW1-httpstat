@@ -104,6 +104,15 @@ blue = make_color(34)
 magenta = make_color(35)
 cyan = make_color(36)
 
+black = make_color(30)
+whiteBackground = make_color(7)
+redBackground = make_color(41)
+greenBackground = make_color(42)
+blueBackground = make_color(44)
+yellowBackground = make_color(43)
+magentaBackground = make_color(45)
+cyanBackground = make_color(46)
+
 bold = make_color(1)
 underline = make_color(4)
 
