@@ -113,6 +113,15 @@ blue = make_color(33)
 magenta = make_color(36)
 cyan = make_color(35)
 
+black = make_color(30)
+whiteBackground = make_color(7)
+redBackground = make_color(41)
+greenBackground = make_color(42)
+blueBackground = make_color(44)
+yellowBackground = make_color(43)
+magentaBackground = make_color(45)
+cyanBackground = make_color(46)
+
 bold = make_color(1)
 underline = make_color(4)
 
@@ -268,7 +277,7 @@ def main():
     # ip
     if show_ip:
         s = 'Connected to {}:{} from {}:{}'.format(
-            cyan(d['remote_ip']), cyan(d['remote_port']),
+            red(d['remote_ip']), red(d['remote_port']),
             d['local_ip'], d['local_port'],
         )
         print(s)
@@ -284,10 +293,10 @@ def main():
     for loop, line in enumerate(headers.split('\n')):
         if loop == 0:
             p1, p2 = tuple(line.split('/'))
-            print(green(p1) + grayscale[14]('/') + cyan(p2))
+            print(magenta(p1) + grayscale[14]('/') + red(p2))
         else:
             pos = line.find(':')
-            print(grayscale[14](line[:pos + 1]) + cyan(line[pos + 1:]))
+            print(grayscale[14](line[:pos + 1]) + red(line[pos + 1:]))
 
     print()
 
@@ -309,7 +318,7 @@ def main():
             print(body)
     else:
         if save_body:
-            print('{} stored in: {}'.format(green('Body'), bodyf.name))
+            print('{} stored in: {}'.format(magenta('Body'), bodyf.name))
 
     # remove body file
     if not save_body:
@@ -328,10 +337,10 @@ def main():
     template = '\n'.join(tpl_parts)
 
     def fmta(s):
-        return cyan('{:^7}'.format(str(s) + 'ms'))
+        return red('{:^7}'.format(str(s) + 'ms'))
 
     def fmtb(s):
-        return cyan('{:<7}'.format(str(s) + 'ms'))
+        return red('{:<7}'.format(str(s) + 'ms'))
 
     stat = template.format(
         # a
