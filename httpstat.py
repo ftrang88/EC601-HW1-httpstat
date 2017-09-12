@@ -112,6 +112,7 @@ yellow = make_color(34)
 blue = make_color(33)
 magenta = make_color(36)
 cyan = make_color(35)
+white = make_color(37)
 
 black = make_color(30)
 whiteBackground = make_color(7)
@@ -173,12 +174,12 @@ def main():
         quit(None, 0)
 
     # get envs
-    show_body = 'true' in ENV_SHOW_BODY.get('false').lower()
-    show_ip = 'true' in ENV_SHOW_IP.get('true').lower()
-    show_speed = 'true'in ENV_SHOW_SPEED.get('false').lower()
-    save_body = 'true' in ENV_SAVE_BODY.get('true').lower()
+    show_body = 'true' in ENV_SHOW_BODY.get('false').upper()
+    show_ip = 'true' in ENV_SHOW_IP.get('true').upper()
+    show_speed = 'true'in ENV_SHOW_SPEED.get('false').upper()
+    save_body = 'true' in ENV_SAVE_BODY.get('true').upper()
     curl_bin = ENV_CURL_BIN.get('curl')
-    is_debug = 'true' in ENV_DEBUG.get('false').lower()
+    is_debug = 'true' in ENV_DEBUG.get('false').upper()
 
     # configure logging
     if is_debug:
@@ -298,6 +299,7 @@ def main():
             pos = line.find(':')
             print(grayscale[14](line[:pos + 1]) + red(line[pos + 1:]))
 
+
     print()
 
     # body
@@ -310,7 +312,7 @@ def main():
         if body_len > body_limit:
             print(body[:body_limit] + cyan('...'))
             print()
-            s = '{} is truncated ({} out of {})'.format(green('Body'), body_limit, body_len)
+            s = '{} is truncated ({} out of {})'.format(white('Body'), body_limit, body_len)
             if save_body:
                 s += ', stored in: {}'.format(bodyf.name)
             print(s)
@@ -333,14 +335,16 @@ def main():
 
     # colorize template first line
     tpl_parts = template.split('\n')
-    tpl_parts[0] = grayscale[16](tpl_parts[0])
+    tpl_parts[0] = white[16](tpl_parts[0])
     template = '\n'.join(tpl_parts)
 
     def fmta(s):
+
         return red('{:^7}'.format(str(s) + 'ms'))
 
     def fmtb(s):
         return red('{:<7}'.format(str(s) + 'ms'))
+
 
     stat = template.format(
         # a
