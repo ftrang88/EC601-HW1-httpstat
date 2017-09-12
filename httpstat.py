@@ -5,7 +5,7 @@
 # https://curl.haxx.se/libcurl/c/curl_easy_getinfo.html
 # https://curl.haxx.se/libcurl/c/easy_getinfo_options.html
 # http://blog.kenweiner.com/2014/11/http-request-timings-with-curl.html
-
+#name:lyz
 from __future__ import print_function
 
 import os
@@ -64,23 +64,32 @@ curl_format = """{
 
 https_template = """
   DNS Lookup   TCP Connection   TLS Handshake   Server Processing   Content Transfer
-[   {a0000}  |     {a0001}    |    {a0002}    |      {a0003}      |      {a0004}     ]
-             |                |               |                   |                  |
-    namelookup:{b0000}        |               |                   |                  |
-                        connect:{b0001}       |                   |                  |
-                                    pretransfer:{b0002}           |                  |
-                                                      starttransfer:{b0003}          |
-                                                                                 total:{b0004}
+
+      namelookup:{b0000}  connect:{b0001} pretransfer:{b0002} starttransfer:{b0003}  
+             |                |               |                   |     
+
+[            |                |               |                   |                    ]
+             |                |               |                   |           {a0004}       
+           {a0000}         {a0001}            |                   |                                  
+                                                                  |                   
+                                           {a0002}             {a0003}                                 
+                                                                  |total:{b0004}            
+                                                                                 
 """[1:]
 
 http_template = """
-  DNS Lookup   TCP Connection   Server Processing   Content Transfer
-[   {a0000}  |     {a0001}    |      {a0003}      |      {a0004}     ]
-             |                |                   |                  |
-    namelookup:{b0000}        |                   |                  |
-                        connect:{b0001}           |                  |
-                                      starttransfer:{b0003}          |
-                                                                 total:{b0004}
+  DNS Lookup   TCP Connection   TLS Handshake   Server Processing   Content Transfer
+
+      namelookup:{b0000}  connect:{b0001} pretransfer:{b0002} starttransfer:{b0003}  
+             |                |               |                   |     
+
+[            |                |               |                   |                    ]
+             |                |               |                   |           {a0004}       
+           {a0000}         {a0001}            |                   |                                  
+                                                                  |                   
+                                           {a0002}             {a0003}                                 
+                                                                  |total:{b0004}            
+                                                                                 
 """[1:]
 
 
@@ -88,7 +97,7 @@ http_template = """
 ISATTY = sys.stdout.isatty()
 
 
-def make_color(code):
+def make_color(code):  #change the color
     def color_func(s):
         if not ISATTY:
             return s
@@ -104,6 +113,16 @@ blue = make_color(33)
 magenta = make_color(36)
 cyan = make_color(35)
 white = make_color(37)
+
+black = make_color(30)
+whiteBackground = make_color(7)
+redBackground = make_color(41)
+greenBackground = make_color(42)
+blueBackground = make_color(44)
+yellowBackground = make_color(43)
+magentaBackground = make_color(45)
+cyanBackground = make_color(46)
+
 bold = make_color(1)
 underline = make_color(4)
 
@@ -259,7 +278,7 @@ def main():
     # ip
     if show_ip:
         s = 'Connected to {}:{} from {}:{}'.format(
-            cyan(d['remote_ip']), cyan(d['remote_port']),
+            red(d['remote_ip']), red(d['remote_port']),
             d['local_ip'], d['local_port'],
         )
         print(s)
@@ -275,10 +294,11 @@ def main():
     for loop, line in enumerate(headers.split('\n')):
         if loop == 0:
             p1, p2 = tuple(line.split('/'))
-            print(white(p1) + cyan[14]('/') + magenta(p2))
+            print(magenta(p1) + grayscale[14]('/') + red(p2))
         else:
             pos = line.find(':')
-            print(cyan[14](line[:pos + 1]) + magenta(line[pos + 1:]))
+            print(grayscale[14](line[:pos + 1]) + red(line[pos + 1:]))
+
 
     print()
 
@@ -300,7 +320,7 @@ def main():
             print(body)
     else:
         if save_body:
-            print('{} stored in: {}'.format(white('Body'), bodyf.name))
+            print('{} stored in: {}'.format(magenta('Body'), bodyf.name))
 
     # remove body file
     if not save_body:
@@ -319,10 +339,12 @@ def main():
     template = '\n'.join(tpl_parts)
 
     def fmta(s):
-        return magenta('{:^7}'.format(str(s) + 'ms'))
+
+        return red('{:^7}'.format(str(s) + 'ms'))
 
     def fmtb(s):
-        return magenta('{:<7}'.format(str(s) + 'ms'))
+        return red('{:<7}'.format(str(s) + 'ms'))
+
 
     stat = template.format(
         # a
