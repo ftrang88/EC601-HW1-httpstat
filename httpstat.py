@@ -268,7 +268,7 @@ def main():
     # ip
     if show_ip:
         s = 'Connected to {}:{} from {}:{}'.format(
-            red(d['remote_ip']), red(d['remote_port']),
+            magenta(d['remote_ip']), magenta(d['remote_port']),
             d['local_ip'], d['local_port'],
         )
         print(s)
@@ -284,10 +284,10 @@ def main():
     for loop, line in enumerate(headers.split('\n')):
         if loop == 0:
             p1, p2 = tuple(line.split('/'))
-            print(magenta(p1) + grayscale[14]('/') + red(p2))
+            print(magenta(p1) + grayscale[14]('/') + magenta(p2))
         else:
             pos = line.find(':')
-            print(grayscale[14](line[:pos + 1]) + red(line[pos + 1:]))
+            print(grayscale[14](line[:pos + 1]) + magenta(line[pos + 1:]))
 
     print()
 
@@ -299,9 +299,9 @@ def main():
         body_len = len(body)
 
         if body_len > body_limit:
-            print(body[:body_limit] + cyan('...'))
+            print(body[:body_limit] + magenta('...'))
             print()
-            s = '{} is truncated ({} out of {})'.format(green('Body'), body_limit, body_len)
+            s = '{} is truncated ({} out of {})'.format(magenta('Body'), body_limit, body_len)
             if save_body:
                 s += ', stored in: {}'.format(bodyf.name)
             print(s)
@@ -328,10 +328,10 @@ def main():
     template = '\n'.join(tpl_parts)
 
     def fmta(s):
-        return red('{:^7}'.format(str(s) + 'ms'))
+        return magenta('{:^7}'.format(str(s) + 'ms'))
 
     def fmtb(s):
-        return red('{:<7}'.format(str(s) + 'ms'))
+        return magenta('{:<7}'.format(str(s) + 'ms'))
 
     stat = template.format(
         # a
