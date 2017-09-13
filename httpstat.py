@@ -63,6 +63,20 @@ curl_format = """{
 }"""
 
 https_template = """
+
+  
+ DNS Lookup   TCP Connection   TLS Handshake   Server Processing   Content Transfer
+
+      namelookup:{b0000}  connect:{b0001} pretransfer:{b0002} starttransfer:{b0003}  
+             |                |               |                   |     
+
+[            |                |               |                   |                    ]
+             |                |               |                   |           {a0004}       
+           {a0000}         {a0001}            |                   |                                  
+                                                                  |                   
+                                           {a0002}             {a0003}                                 
+                                                                  |total:{b0004}      
+
   DNS Lookup   TCP Connection   TLS Handshake   Server Processing   Content Transfer
 
       namelookup:{b0000}  connect:{b0001} pretransfer:{b0002} starttransfer:{b0003}  
@@ -75,6 +89,7 @@ https_template = """
                                            {a0002}             {a0003}                                 
                                                                   |total:{b0004}            
                                                                                  
+
 """[1:]
 
 http_template = """
@@ -106,12 +121,13 @@ def make_color(code):  #change the color
     return color_func
 
 
-red = make_color(32)
-green = make_color(31)
-yellow = make_color(34)
-blue = make_color(33)
-magenta = make_color(36)
-cyan = make_color(35)
+
+red = make_color(28)
+green = make_color(29)
+yellow = make_color(10)
+blue = make_color(15)
+magenta = make_color(20)
+cyan = make_color(32)
 white = make_color(37)
 
 black = make_color(30)
@@ -123,8 +139,9 @@ yellowBackground = make_color(43)
 magentaBackground = make_color(45)
 cyanBackground = make_color(46)
 
-bold = make_color(1)
-underline = make_color(4)
+
+bold = make_color(2)
+underline = make_color(6)
 
 grayscale = {(i - 232): make_color('38;5;' + str(i)) for i in xrange(232, 256)}
 
@@ -374,3 +391,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
