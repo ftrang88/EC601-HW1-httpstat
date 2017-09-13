@@ -63,27 +63,48 @@ curl_format = """{
 }"""
 
 https_template = """
+
   
  DNS Lookup   TCP Connection   TLS Handshake   Server Processing   Content Transfer
 
+      namelookup:{b0000}  connect:{b0001} pretransfer:{b0002} starttransfer:{b0003}  
+             |                |               |                   |     
 
-[   {a0000}  |     {a0001}    |    {a0002}    |      {a0003}      |      {a0004}     ]
-             |                |               |                   |                  |
-    namelookup:{b0000}        |               |                   |                  |
-                        connect:{b0001}       |                   |                  |
-                                    pretransfer:{b0002}           |                  |
-                                                      starttransfer:{b0003}          |
-                                                                                 total:{b0004}
+[            |                |               |                   |                    ]
+             |                |               |                   |           {a0004}       
+           {a0000}         {a0001}            |                   |                                  
+                                                                  |                   
+                                           {a0002}             {a0003}                                 
+                                                                  |total:{b0004}      
+
+  DNS Lookup   TCP Connection   TLS Handshake   Server Processing   Content Transfer
+
+      namelookup:{b0000}  connect:{b0001} pretransfer:{b0002} starttransfer:{b0003}  
+             |                |               |                   |     
+
+[            |                |               |                   |                    ]
+             |                |               |                   |           {a0004}       
+           {a0000}         {a0001}            |                   |                                  
+                                                                  |                   
+                                           {a0002}             {a0003}                                 
+                                                                  |total:{b0004}            
+                                                                                 
+
 """[1:]
 
 http_template = """
-  DNS Lookup   TCP Connection   Server Processing   Content Transfer
-[   {a0000}  |     {a0001}    |      {a0003}      |      {a0004}     ]
-             |                |                   |                  |
-    namelookup:{b0000}        |                   |                  |
-                        connect:{b0001}           |                  |
-                                      starttransfer:{b0003}          |
-                                                                 total:{b0004}
+  DNS Lookup   TCP Connection   TLS Handshake   Server Processing   Content Transfer
+
+      namelookup:{b0000}  connect:{b0001} pretransfer:{b0002} starttransfer:{b0003}  
+             |                |               |                   |     
+
+[            |                |               |                   |                    ]
+             |                |               |                   |           {a0004}       
+           {a0000}         {a0001}            |                   |                                  
+                                                                  |                   
+                                           {a0002}             {a0003}                                 
+                                                                  |total:{b0004}            
+                                                                                 
 """[1:]
 
 
@@ -100,12 +121,24 @@ def make_color(code):  #change the color
     return color_func
 
 
+
 red = make_color(28)
 green = make_color(29)
 yellow = make_color(10)
 blue = make_color(15)
 magenta = make_color(20)
 cyan = make_color(32)
+white = make_color(37)
+
+black = make_color(30)
+whiteBackground = make_color(7)
+redBackground = make_color(41)
+greenBackground = make_color(42)
+blueBackground = make_color(44)
+yellowBackground = make_color(43)
+magentaBackground = make_color(45)
+cyanBackground = make_color(46)
+
 
 bold = make_color(2)
 underline = make_color(6)
@@ -158,12 +191,12 @@ def main():
         quit(None, 0)
 
     # get envs
-    show_body = 'true' in ENV_SHOW_BODY.get('false').lower()
-    show_ip = 'true' in ENV_SHOW_IP.get('true').lower()
-    show_speed = 'true'in ENV_SHOW_SPEED.get('false').lower()
-    save_body = 'true' in ENV_SAVE_BODY.get('true').lower()
+    show_body = 'true' in ENV_SHOW_BODY.get('false').upper()
+    show_ip = 'true' in ENV_SHOW_IP.get('true').upper()
+    show_speed = 'true'in ENV_SHOW_SPEED.get('false').upper()
+    save_body = 'true' in ENV_SAVE_BODY.get('true').upper()
     curl_bin = ENV_CURL_BIN.get('curl')
-    is_debug = 'true' in ENV_DEBUG.get('false').lower()
+    is_debug = 'true' in ENV_DEBUG.get('false').upper()
 
     # configure logging
     if is_debug:
@@ -262,7 +295,7 @@ def main():
     # ip
     if show_ip:
         s = 'Connected to {}:{} from {}:{}'.format(
-            cyan(d['remote_ip']), cyan(d['remote_port']),
+            red(d['remote_ip']), red(d['remote_port']),
             d['local_ip'], d['local_port'],
         )
         print(s)
@@ -278,10 +311,11 @@ def main():
     for loop, line in enumerate(headers.split('\n')):
         if loop == 0:
             p1, p2 = tuple(line.split('/'))
-            print(green(p1) + grayscale[14]('/') + cyan(p2))
+            print(magenta(p1) + grayscale[14]('/') + red(p2))
         else:
             pos = line.find(':')
-            print(grayscale[14](line[:pos + 1]) + cyan(line[pos + 1:]))
+            print(grayscale[14](line[:pos + 1]) + red(line[pos + 1:]))
+
 
     print()
 
@@ -295,7 +329,7 @@ def main():
         if body_len > body_limit:
             print(body[:body_limit] + cyan('...'))
             print()
-            s = '{} is truncated ({} out of {})'.format(green('Body'), body_limit, body_len)
+            s = '{} is truncated ({} out of {})'.format(white('Body'), body_limit, body_len)
             if save_body:
                 s += ', stored in: {}'.format(bodyf.name)
             print(s)
@@ -303,7 +337,7 @@ def main():
             print(body)
     else:
         if save_body:
-            print('{} stored in: {}'.format(green('Body'), bodyf.name))
+            print('{} stored in: {}'.format(magenta('Body'), bodyf.name))
 
     # remove body file
     if not save_body:
@@ -318,14 +352,16 @@ def main():
 
     # colorize template first line
     tpl_parts = template.split('\n')
-    tpl_parts[0] = grayscale[16](tpl_parts[0])
+    tpl_parts[0] = white[16](tpl_parts[0])
     template = '\n'.join(tpl_parts)
 
     def fmta(s):
-        return cyan('{:^7}'.format(str(s) + 'ms'))
+
+        return red('{:^7}'.format(str(s) + 'ms'))
 
     def fmtb(s):
-        return cyan('{:<7}'.format(str(s) + 'ms'))
+        return red('{:<7}'.format(str(s) + 'ms'))
+
 
     stat = template.format(
         # a
