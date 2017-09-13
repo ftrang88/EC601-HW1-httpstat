@@ -260,7 +260,7 @@ def main():
         d = json.loads(out)
     except ValueError as e:
         print(yellow('Could not decode json: {}'.format(e)))
-        print('curl result:', p.returncode, grayscale[16](out), grayscale[16](err))
+        print('curl result:', p.returncode, yellow[16](out), yellow[16](err))
         quit(None, 1)
     for k in d:
         if k.startswith('time_'):
@@ -278,7 +278,7 @@ def main():
     # ip
     if show_ip:
         s = 'Connected to {}:{} from {}:{}'.format(
-            red(d['remote_ip']), red(d['remote_port']),
+            yellow(d['remote_ip']), yellow(d['remote_port']),
             d['local_ip'], d['local_port'],
         )
         print(s)
@@ -294,10 +294,10 @@ def main():
     for loop, line in enumerate(headers.split('\n')):
         if loop == 0:
             p1, p2 = tuple(line.split('/'))
-            print(magenta(p1) + grayscale[14]('/') + red(p2))
+            print(yellow(p1) + yellow[14]('/') + yellow(p2))
         else:
             pos = line.find(':')
-            print(grayscale[14](line[:pos + 1]) + red(line[pos + 1:]))
+            print(yellow[14](line[:pos + 1]) + yellow(line[pos + 1:]))
 
 
     print()
@@ -312,7 +312,7 @@ def main():
         if body_len > body_limit:
             print(body[:body_limit] + cyan('...'))
             print()
-            s = '{} is truncated ({} out of {})'.format(white('Body'), body_limit, body_len)
+            s = '{} is truncated ({} out of {})'.format(yellow('Body'), body_limit, body_len)
             if save_body:
                 s += ', stored in: {}'.format(bodyf.name)
             print(s)
@@ -320,7 +320,7 @@ def main():
             print(body)
     else:
         if save_body:
-            print('{} stored in: {}'.format(magenta('Body'), bodyf.name))
+            print('{} stored in: {}'.format(yellow('Body'), bodyf.name))
 
     # remove body file
     if not save_body:
@@ -335,7 +335,7 @@ def main():
 
     # colorize template first line
     tpl_parts = template.split('\n')
-    tpl_parts[0] = white[16](tpl_parts[0])
+    tpl_parts[0] = yellow[16](tpl_parts[0])
     template = '\n'.join(tpl_parts)
 
     def fmta(s):
