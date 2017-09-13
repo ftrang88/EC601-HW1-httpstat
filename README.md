@@ -1,5 +1,7 @@
 # httpstat
 
+# This is Group 14 for EC601
+
 ![screenshot](screenshot.png)
 
 httpstat visualizes `curl(1)` statistics in a way of beauty and clarity.
