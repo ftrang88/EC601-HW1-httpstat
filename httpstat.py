@@ -5,7 +5,7 @@
 # https://curl.haxx.se/libcurl/c/curl_easy_getinfo.html
 # https://curl.haxx.se/libcurl/c/easy_getinfo_options.html
 # http://blog.kenweiner.com/2014/11/http-request-timings-with-curl.html
-
+#name:lyz
 from __future__ import print_function
 
 import os
@@ -64,23 +64,32 @@ curl_format = """{
 
 https_template = """
   DNS Lookup   TCP Connection   TLS Handshake   Server Processing   Content Transfer
-[   {a0000}  |     {a0001}    |    {a0002}    |      {a0003}      |      {a0004}     ]
-             |                |               |                   |                  |
-    namelookup:{b0000}        |               |                   |                  |
-                        connect:{b0001}       |                   |                  |
-                                    pretransfer:{b0002}           |                  |
-                                                      starttransfer:{b0003}          |
-                                                                                 total:{b0004}
+
+      namelookup:{b0000}  connect:{b0001} pretransfer:{b0002} starttransfer:{b0003}  
+             |                |               |                   |     
+
+[            |                |               |                   |                    ]
+             |                |               |                   |           {a0004}       
+           {a0000}         {a0001}            |                   |                                  
+                                                                  |                   
+                                           {a0002}             {a0003}                                 
+                                                                  |total:{b0004}            
+                                                                                 
 """[1:]
 
 http_template = """
-  DNS Lookup   TCP Connection   Server Processing   Content Transfer
-[   {a0000}  |     {a0001}    |      {a0003}      |      {a0004}     ]
-             |                |                   |                  |
-    namelookup:{b0000}        |                   |                  |
-                        connect:{b0001}           |                  |
-                                      starttransfer:{b0003}          |
-                                                                 total:{b0004}
+  DNS Lookup   TCP Connection   TLS Handshake   Server Processing   Content Transfer
+
+      namelookup:{b0000}  connect:{b0001} pretransfer:{b0002} starttransfer:{b0003}  
+             |                |               |                   |     
+
+[            |                |               |                   |                    ]
+             |                |               |                   |           {a0004}       
+           {a0000}         {a0001}            |                   |                                  
+                                                                  |                   
+                                           {a0002}             {a0003}                                 
+                                                                  |total:{b0004}            
+                                                                                 
 """[1:]
 
 
@@ -88,7 +97,7 @@ http_template = """
 ISATTY = sys.stdout.isatty()
 
 
-def make_color(code):
+def make_color(code):  #change the color
     def color_func(s):
         if not ISATTY:
             return s
@@ -97,12 +106,13 @@ def make_color(code):
     return color_func
 
 
-red = make_color(31)
-green = make_color(32)
-yellow = make_color(33)
-blue = make_color(34)
-magenta = make_color(35)
-cyan = make_color(36)
+red = make_color(32)
+green = make_color(31)
+yellow = make_color(34)
+blue = make_color(33)
+magenta = make_color(36)
+cyan = make_color(35)
+white = make_color(37)
 
 black = make_color(30)
 whiteBackground = make_color(7)
@@ -164,12 +174,12 @@ def main():
         quit(None, 0)
 
     # get envs
-    show_body = 'true' in ENV_SHOW_BODY.get('false').lower()
-    show_ip = 'true' in ENV_SHOW_IP.get('true').lower()
-    show_speed = 'true'in ENV_SHOW_SPEED.get('false').lower()
-    save_body = 'true' in ENV_SAVE_BODY.get('true').lower()
+    show_body = 'true' in ENV_SHOW_BODY.get('false').upper()
+    show_ip = 'true' in ENV_SHOW_IP.get('true').upper()
+    show_speed = 'true'in ENV_SHOW_SPEED.get('false').upper()
+    save_body = 'true' in ENV_SAVE_BODY.get('true').upper()
     curl_bin = ENV_CURL_BIN.get('curl')
-    is_debug = 'true' in ENV_DEBUG.get('false').lower()
+    is_debug = 'true' in ENV_DEBUG.get('false').upper()
 
     # configure logging
     if is_debug:
@@ -289,6 +299,7 @@ def main():
             pos = line.find(':')
             print(grayscale[14](line[:pos + 1]) + magenta(line[pos + 1:]))
 
+
     print()
 
     # body
@@ -301,7 +312,7 @@ def main():
         if body_len > body_limit:
             print(body[:body_limit] + magenta('...'))
             print()
-            s = '{} is truncated ({} out of {})'.format(magenta('Body'), body_limit, body_len)
+            s = '{} is truncated ({} out of {})'.format(white('Body'), body_limit, body_len)
             if save_body:
                 s += ', stored in: {}'.format(bodyf.name)
             print(s)
@@ -324,14 +335,16 @@ def main():
 
     # colorize template first line
     tpl_parts = template.split('\n')
-    tpl_parts[0] = grayscale[16](tpl_parts[0])
+    tpl_parts[0] = white[16](tpl_parts[0])
     template = '\n'.join(tpl_parts)
 
     def fmta(s):
         return magenta('{:^7}'.format(str(s) + 'ms'))
 
+
     def fmtb(s):
         return magenta('{:<7}'.format(str(s) + 'ms'))
+
 
     stat = template.format(
         # a
