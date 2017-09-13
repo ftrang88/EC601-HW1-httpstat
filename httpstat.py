@@ -63,7 +63,10 @@ curl_format = """{
 }"""
 
 https_template = """
-  DNS Lookup   TCP Connection   TLS Handshake   Server Processing   Content Transfer
+  
+ DNS Lookup   TCP Connection   TLS Handshake   Server Processing   Content Transfer
+
+
 [   {a0000}  |     {a0001}    |    {a0002}    |      {a0003}      |      {a0004}     ]
              |                |               |                   |                  |
     namelookup:{b0000}        |               |                   |                  |
@@ -88,7 +91,7 @@ http_template = """
 ISATTY = sys.stdout.isatty()
 
 
-def make_color(code):
+def make_color(code):  #change the color
     def color_func(s):
         if not ISATTY:
             return s
@@ -97,15 +100,15 @@ def make_color(code):
     return color_func
 
 
-red = make_color(32)
-green = make_color(31)
-yellow = make_color(34)
-blue = make_color(33)
-magenta = make_color(36)
-cyan = make_color(35)
+red = make_color(28)
+green = make_color(29)
+yellow = make_color(10)
+blue = make_color(15)
+magenta = make_color(20)
+cyan = make_color(32)
 
-bold = make_color(1)
-underline = make_color(4)
+bold = make_color(2)
+underline = make_color(6)
 
 grayscale = {(i - 232): make_color('38;5;' + str(i)) for i in xrange(232, 256)}
 
@@ -349,3 +352,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
