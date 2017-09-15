@@ -1,0 +1,9 @@
+Table = "{:<6} {:<6}"
+earth_weight=5.92*pow(10.0,24.0)
+billions_atom_weight=1.67*pow(10.0,-12.0)
+low=earth_weight*pow(10,15)/(billions_atom_weight*pow(2.0,40.0))
+my=low*8
+upper=low*26
+print(Table.format('my estimate: ',my))
+print(Table.format('lower bound: ',low))
+print(Table.format('upper bound: ',upper))
