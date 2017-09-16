@@ -1,0 +1,10 @@
+Table = "{:<6} {:<22} {:<22} {:<22}"
+print(Table.format('Bytes','Largest Unsigned Int','Minimum Signed Int','Maximum Signed Int'))
+print(Table.format('1','255','-128','127'))
+print(Table.format('2','65535','-32768','32767'))
+print(Table.format('3',2**24-1,-int(2**24/2),int(2**24/2)-1))
+print(Table.format('4',2**32-1,-int(2**32/2),int(2**32/2)-1))
+print(Table.format('5',2**40-1,-int(2**40/2),int(2**40/2)-1))
+print(Table.format('6',2**48-1,-int(2**48/2),int(2**48/2)-1))
+print(Table.format('7',2**56-1,-int(2**56/2),int(2**56/2)-1))
+print(Table.format('8',2**64-1,-int(2**64/2),int(2**64/2)-1))
