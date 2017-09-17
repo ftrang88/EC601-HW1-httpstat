@@ -3,6 +3,7 @@
 ## This is Group 14 for EC601
 
 The purpose of this project was to learn how to use GitHub. Our daily tasks involved using a different aspect of GitHub to become familiar with version-control. Additional tasks involved getting familiar with the Python programming language.
+Group members: Yize Liu, Frank Tranghese, Zisen Zhou
 
 ![screenshot](screenshot.png)
 
